@@ -12,8 +12,7 @@ struct Node
  
 void stack()
 {
-	std::string command = "";
-    // up is a name for the top object in the stack
+	std::string command = "";// up is a name for the top object in the stack
 	Node* up = nullptr;
     // size variable is an easy way to control
     // number of containing elements
