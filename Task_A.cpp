@@ -11,8 +11,6 @@ struct Node
 	Node* prev;
 	int number;
 };
-
-
 void push(int value)
 {
 	// creating pointer for the element we want to push
