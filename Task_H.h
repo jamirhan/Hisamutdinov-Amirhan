@@ -49,7 +49,8 @@ void LSD_sort(std::vector<Big_Number*>& numbers, int byte_number, int start, int
 				++index;
 			}
 			if (byte_number != 1 && index - start_index > 1) // further sorting on equal elements (if more than one)
-				LSD_sort(numbers, byte_number - 1, start_index, index);
+				LSD_sort(numbers, byte_number - 1, start_index, index);// Рекурсивный вызов на корзинках? Это на самом деле не LSD, а корзиночная сортировка
+			// Они очень похожи но всё же отличаются
 		}
 		++byte_val;
 	}
