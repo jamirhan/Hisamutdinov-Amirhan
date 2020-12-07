@@ -101,7 +101,6 @@ struct Binary_Tree
 // the saame structure but based on pairs
 struct Sub_Binary_Tree
 {
-
 	std::vector<std::pair<int, int>> elements;
 	int cur_size;
 
@@ -171,6 +170,8 @@ struct Sub_Binary_Tree
 	}
 
 };
+
+
 
 void solution()
 {
