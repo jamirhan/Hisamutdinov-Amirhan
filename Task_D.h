@@ -6,7 +6,6 @@
 
 struct Binary_Tree
 {
-
 	long long* elements; //elements of the heap
 	int cur_size; // size
 	int* to_normal; // additional array to convert outer indexes to inner
@@ -37,6 +36,7 @@ struct Binary_Tree
 			index /= 2;
 		}
 	}
+	
 	int choose_min_child(int ind)
 	{
 		// beautiful function that helps to find minimal child of current node
@@ -98,9 +98,9 @@ struct Binary_Tree
 		// the first elements is minimal
 		return elements[1];
 	}
-
-
 };
+
+
 
 void solution()
 {
