@@ -96,7 +96,7 @@ public:
 
 	Node* insert(Node* el, long long val)
 	{
-		/*if (val == -76)
+		/*if (val == -76)  76??? :))
 		{
 			std::cout << "be";
 		}*/
@@ -131,6 +131,7 @@ public:
 
 	Node* del_min(Node* el)
 	{
+		//А где само удаление элемента? После смены ссылок он останется висеть в памяти. Нужно доделать
 		if (el->left == nullptr)
 			return el->right;
 		el->left = del_min(el->left);
@@ -150,6 +151,7 @@ public:
 			Node* right_el = el->right;
 			Node* left_el = el->left;
 			if (right_el == nullptr)
+				//аналогично здесь
 				return el->left;
 			Node* min_el = find_min(el->right);
 			min_el->right = del_min(right_el);
