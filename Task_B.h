@@ -50,7 +50,7 @@ class Splay_Tree {
 		}
 	}
 
-	void right_zig_zig(Node* element) {
+	void right_zig_zig(Node* element) {// zig zig ведь потому так и называется, что это 2 вызова одной функции, зачем же делать самокопирование?
 		Node* dad = element->parent; // not nullptr because in splay while (element->parent != nullptr)
 		Node* grand = dad->parent; // not nullptr because splay calls it only when grand != nullptr
 		if (grand->parent) {
@@ -116,7 +116,7 @@ class Splay_Tree {
 		grand->parent = element;
 	}
 
-	void left_right_zig_zag(Node* element) {
+	void left_right_zig_zag(Node* element) {// 
 		Node* dad = element->parent; // not nullptr because in splay while (element->parent != nullptr)
 		Node* grand = dad->parent; // not nullptr because splay calls it only when grand != nullptr
 		if (grand->parent) {
@@ -169,7 +169,7 @@ public:
 
 	Node* root = nullptr;
 
-	Node* find(long long val) {
+	Node* find(long long val) {// Важный момент, в spaly дереве самая главная фишка это splay после find, иначе смысл теряется.
 		//TODO return nullptr if not found
 		Node* cur_element = root;
 		while (cur_element) {
@@ -243,10 +243,10 @@ public:
 		root = maximal;
 	}
 
-	void insert(long long val) { // TODO: check if the element already exists
+	void insert(long long val) { 
 		Node* cur_element = root;
 		Node* cur_parent = nullptr;
-		if (find(val))
+		if (find(val))// 
 			return;
 		while (cur_element) {
 			cur_parent = cur_element;
@@ -279,6 +279,8 @@ public:
 		if (element->right)
 			element->right->parent = nullptr;
 		Splay_Tree new_tree(element->right);
+		//Так ты ведь вроде не удалил так элемент, он в корне остался, нет? В любом случае требуется ещё удалить элемент из памяти,
+		//а не только затереть ссылку
 		merge(new_tree);
 	}
 
