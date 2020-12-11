@@ -13,7 +13,6 @@ struct Node
 	long long right_size = 0;
 
 	Node(std::vector<long long> val = { 0ll, 0ll, 0ll }) : value(val) {}
-
 };
 
 
