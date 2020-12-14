@@ -50,7 +50,7 @@ class Splay_Tree {
 		}
 	}
 
-	void right_zig_zig(Node* element) {// zig zig РІРµРґСЊ РїРѕС‚РѕРјСѓ С‚Р°Рє Рё РЅР°Р·С‹РІР°РµС‚СЃСЏ, С‡С‚Рѕ СЌС‚Рѕ 2 РІС‹Р·РѕРІР° РѕРґРЅРѕР№ С„СѓРЅРєС†РёРё, Р·Р°С‡РµРј Р¶Рµ РґРµР»Р°С‚СЊ СЃР°РјРѕРєРѕРїРёСЂРѕРІР°РЅРёРµ?
+	void right_zig_zig(Node* element) {// zig zig ведь потому так и называется, что это 2 вызова одной функции, зачем же делать самокопирование?
 		Node* dad = element->parent; // not nullptr because in splay while (element->parent != nullptr)
 		Node* grand = dad->parent; // not nullptr because splay calls it only when grand != nullptr
 		if (grand->parent) {
@@ -162,6 +162,14 @@ class Splay_Tree {
 		root = element; //maybe it's better to place this in zig functions
 	}
 
+	void delete_subtree(Node* subtree) {
+		if (subtree->left)
+			delete_subtree(subtree->left);
+		if (subtree->right)
+			delete_subtree(subtree->right);
+		delete subtree;
+	}
+
 public:
 
 	Splay_Tree() {};
@@ -169,7 +177,7 @@ public:
 
 	Node* root = nullptr;
 
-	Node* find(long long val) {// Р’Р°Р¶РЅС‹Р№ РјРѕРјРµРЅС‚, РІ spaly РґРµСЂРµРІРµ СЃР°РјР°СЏ РіР»Р°РІРЅР°СЏ С„РёС€РєР° СЌС‚Рѕ splay РїРѕСЃР»Рµ find, РёРЅР°С‡Рµ СЃРјС‹СЃР» С‚РµСЂСЏРµС‚СЃСЏ.
+	Node* find(long long val) {// Важный момент, в spaly дереве самая главная фишка это splay после find, иначе смысл теряется.
 		//TODO return nullptr if not found
 		Node* cur_element = root;
 		while (cur_element) {
@@ -243,7 +251,7 @@ public:
 		root = maximal;
 	}
 
-	void insert(long long val) { 
+	void insert(long long val) {
 		Node* cur_element = root;
 		Node* cur_parent = nullptr;
 		if (find(val))// 
@@ -269,19 +277,21 @@ public:
 		std::cout << "a";
 	}
 
-	void erase(long long val) {
-		Node* element = find(val);
-		if (!element)
-			return;
-		splay(element);
-		if (element->left)
-			element->left->parent = nullptr;
-		if (element->right)
-			element->right->parent = nullptr;
-		Splay_Tree new_tree(element->right);
-		//РўР°Рє С‚С‹ РІРµРґСЊ РІСЂРѕРґРµ РЅРµ СѓРґР°Р»РёР» С‚Р°Рє СЌР»РµРјРµРЅС‚, РѕРЅ РІ РєРѕСЂРЅРµ РѕСЃС‚Р°Р»СЃСЏ, РЅРµС‚? Р’ Р»СЋР±РѕРј СЃР»СѓС‡Р°Рµ С‚СЂРµР±СѓРµС‚СЃСЏ РµС‰С‘ СѓРґР°Р»РёС‚СЊ СЌР»РµРјРµРЅС‚ РёР· РїР°РјСЏС‚Рё,
-		//Р° РЅРµ С‚РѕР»СЊРєРѕ Р·Р°С‚РµСЂРµС‚СЊ СЃСЃС‹Р»РєСѓ
-		merge(new_tree);
+
+	void erase(long long index) {
+		Splay_Tree tree_1 = split(index - 1);
+		Splay_Tree tree_2 = split(1);
+		delete tree_2; // deleting element on the top
+		tree_2 = root;
+		root = tree_1.root;
+		merge(tree_2);
+	}
+
+	~Splay_Tree() {
+		if (root->left)
+			delete_subtree(root->left);
+		if (root->right)
+			delete_subtree(root->right);
 	}
 
 	long long get_sum() { return root->sum; } // root != nullptr should be guaranteed by call
