@@ -3,7 +3,7 @@
 
 class String
 {
-	char* string = nullptr;
+	char* string = nullptr;// Странно видеть nullptr при capacity 1
 	size_t capacity = 1;
 	size_t size = 0;
 
@@ -34,7 +34,7 @@ class String
 		}
 		return in;
 	}
-
+	// Для этого создали strlen
 	size_t count_size(const char* ar) //checked
 	{
 		size_t len = 0;
@@ -53,23 +53,22 @@ class String
 	
 public:
 
-	size_t get_cap() { return capacity; }
+	size_t get_cap() { return capacity; }// Такие вещи по идее в принципе не должны быть доступны пользователю, но ладно
 
 	String() //default constructor //checked
 	{
 		size = 0;
 		capacity = 1;
-		string = new char[1];
+		string = new char[1];// А, ок
 	}
 
 	String(const char* c_string) //C-style string constructor //checked
 	{
 		size = count_size(c_string) - 1;
-		capacity = std::max(static_cast<size_t>(1), size);
+		capacity = std::max(static_cast<size_t>(1), size);// А зачем, это же конструктор, в любом случае придётся по двойному размеру делать.
 		string = new char[capacity];
 		memcpy(string, c_string, size);
 	}
-
 
 	String(const int number, const char symb) //another constructor //checked
 	{
@@ -100,7 +99,7 @@ public:
 		if (size == 0)
 			return;
 		if (size < capacity / 4) { change_capacity(capacity / 2 + 1); }
-			--size;
+		--size;
 	}
 
 	void push_back(const char symb) // checked
@@ -139,7 +138,8 @@ public:
 	}
 
 	String substr(int start, int count) const { //checked
-		char* new_str = new char[count + 1];
+		char* new_str = new char[count + 1];// А почему бы вместо с строки не сделать сразу String для возврата? Тогда не будет лишнего копирования
+		// и каста
 		memcpy(new_str, string + start, count);
 		new_str[count] = '\0';
 		return new_str;
@@ -158,7 +158,8 @@ public:
 				++subindex;
 			}
 			else {
-				start = start + subindex + 1;
+				start = start + subindex + 1;// К сожалению так нельзя, нужно искать подстроку заного с позиции +1, не сдвигаясь на несовпадение
+				// контрпример string: aaaaaab substring: aab
 				subindex = 0;
 				found = false;
 			}
@@ -180,7 +181,7 @@ public:
 				--subindex;
 			}
 			else {
-				start = start + subindex - 1;
+				start = start + subindex - 1;// Аналогично
 				subindex = 0;
 				found = false;
 			}
@@ -197,7 +198,7 @@ public:
 		delete[] string;
 		string = new char[1];
 	}
-
+	// Здесь на вход должен приниматься size_t, так как он специально сделан для работы с индексами. Плюс, в int только память на 4 гига влезет, а нынче мало это
 	char operator [](const int arg) const { return string[arg]; } //checked
 	
 	char& operator [](const int arg) { return string[arg]; } //checked
