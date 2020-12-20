@@ -11,7 +11,8 @@ int pow(const int a)  {
 	return ans;
 }
 
-static const int base = 4;
+static const int base = 4;// Это число относится к классу, лучше если оно будет внутри... причём можно сделать его public, чтобы пользователь знал базу
+// Ну так, для информации))
 
 class BigInteger { 
 	bool is_neg = false;
@@ -150,6 +151,7 @@ class BigInteger {
 	}
 
 	BigInteger& operate_double_plus() {
+		// А зачем, по факту теже операции, но ладно
 		int ost = 1;
 		size_t it = 0;
 		while (ost != 0 && it < number.size()) {
@@ -197,7 +199,7 @@ class BigInteger {
 		std::swap(number, obj.number);
 	}
 
-	int count_integer (int x) const {
+	int count_integer (int x) const {// digit_capacity(int x)
 		int count = 0;
 		while (x != 0) {
 			++count;
@@ -228,7 +230,7 @@ class BigInteger {
 			++it;
 		}
 	}
-
+	// Почему бы сразу не сделать сдвиг на число, а не на 1 позицию?
 	void shift_right() {
 		if (number.size() == 0) {
 			number.push_back(0);
@@ -264,7 +266,7 @@ class BigInteger {
 	}
 
 	friend std::ostream& operator << (std::ostream& out, const BigInteger& num) {
-		std::string a = num.toString();
+		std::string a = num.toString();// Лишнее опирование, можно было бы сделать сразу out<<num.toString(), но компилятор всё оптимизирует...
 		out << a;
 		return out;
 	}
@@ -278,17 +280,17 @@ class BigInteger {
 		if (digit == '-') {
 			num.is_neg = true;
 		}
-		else {
+		else {// atoi
 			n.push_back(digit - 48);
 		}
 
-		while (in.get(digit)) {
+		while (in.get(digit)) {// Зачем, ты ведь можешь считать сразу всю строку и обработать её как нужно
 			if (digit == '-')
 				num.is_neg = true;
 
 			if (digit == '\n' || digit == ' ' || digit == '\t' || digit == '\r' || digit == '\0')
 				break;
-			n.push_back(digit - 48);
+			n.push_back(digit - 48);// Аналогично, atoi, плюс проверять бы на то, что числа считываются... Но это к следующему семестру
 		}
 
 		num.number.reserve((n.size() / base) + 10);
@@ -314,11 +316,11 @@ public:
 		return size;
 	}
  
-	bool is_negative() const {
+	bool is_negative() const {// < 0 ? по сути почти столько же операци
 		return is_neg;
 	}
 
-	void inverse_sign() {
+	void inverse_sign() {// Лучше перегрузить *=-1 потому что интуитивнее им будут пользоваться
 		is_neg = !is_neg;
 	}
 
@@ -339,10 +341,10 @@ public:
 	BigInteger(const BigInteger& obj) {
 		is_neg = obj.is_neg;
 		number.resize(obj.number.size());
-		std::copy(obj.number.begin(), obj.number.end(), number.begin());
+		std::copy(obj.number.begin(), obj.number.end(), number.begin());// У вектора есть свой оператор присваивания...
 	}
 
-	BigInteger() {};
+	BigInteger() {};// Здесь появляется пустое число, что не логично. Даже просто создание BigInt должно выдавать 0, а не пустоту
 
 	std::string toString() const {
 		std::string a;
@@ -367,7 +369,7 @@ public:
 		swap(obj);
 		return *this;
 	}
-
+	// А зачем, у тебя ведь уже есть abs_less? Останется только == реализовать, а остальное через них
 	bool operator<= (const BigInteger& second_val) const {
 		if (second_val.is_neg && is_neg) {
 			if (number.size() < second_val.number.size()) return false;
@@ -572,7 +574,7 @@ public:
 
 	BigInteger& operator/=(const BigInteger& num) {
 		if (*this == num) { // Memory leak - correct it please
-			*this = 1;
+			*this = 1;// При правильном операторе присваивания не потечёт, swap как раз то что надо
 			return *this;
 		}
 		if (abs_less(num)) { // danger
@@ -662,7 +664,9 @@ BigInteger operator% (const BigInteger& val_1, const BigInteger& val_2) {
 
 BigInteger super_pow(size_t deg) {
 	BigInteger ans = 1;
-	for (size_t i = 0; i < deg; ++i) {
+	for (size_t i = 0; i < deg; ++i) {// Многовато умножений, по хорошему такая проблема сразу решилась бы конструктором от String,
+		// куда просто записал бы нужное количество 0 без долгих умножений. Либо сделать её внутренней, что тоже не карается.
+		//Надеюсь тебе эта функция не пригодиться
 		ans *= 10;
 	}
 	return ans;
@@ -690,10 +694,10 @@ class Rational {
 		numerator /= g;
 		denominator /= g;
 		if (denominator.is_negative()) {
-			denominator.inverse_sign();
+			denominator.inverse_sign();// *=-1
 			numerator.inverse_sign();
 		}
-		if (numerator.is_negative()) {
+		if (numerator.is_negative()) {// < 0
 			numerator.inverse_sign();
 			if (numerator == 0)
 				return;
@@ -727,7 +731,7 @@ public:
 		ans += whole.toString();
 		if (precision > 0) {
 			ans += ".";
-			for (size_t i = 0; i < precision; ++i) {
+			for (size_t i = 0; i < precision; ++i) {// numerator*pow(10,precision)/denumerator.toSting останется только точку вставить куда нужно
 				after_comma *= 10;
 				BigInteger t = after_comma / denominator;
 				ans += t.toString();
