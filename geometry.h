@@ -27,8 +27,9 @@ double to_radians(const double angle) {
 double distance(Point point, Line line);
 
 double dis(Point p1, Point p2); // i had to name the function like this because mecherin already had function named distance
+// Для этого нужно учиться пользоваться namespace, создая своё под свои нужды
 
-std::vector<Point> get_rect(Point p1, Point p2, double att);
+std::vector<Point> get_rect(Point p1, Point p2, double att);// Это разве не конструктор прямоугольника?
 
 Point middle(Point p1, Point p2);
 
@@ -424,7 +425,7 @@ public:
 		}
 		return false;
 	}
-
+	// Суммирование площадей треугольников может плохо отработать на впуклом многоугольнике, так как там может подсчитываться площадь вне фигуры
 	bool containsPoint(Point point) const override {
 		double s = 0.0;
 		for (size_t i = 0; i < vertices.size(); ++i) {
@@ -602,7 +603,8 @@ public:
 
 class Rectangle : public Polygon {
 public:
-	Rectangle(Point p1, Point p2, double s) : Polygon(get_rect(p1, p2, s)) {}
+	Rectangle(Point p1, Point p2, double s) : Polygon(get_rect(p1, p2, s)) {}// Почему бы эту функцию не реализовать здесь, ну или хотя бы сделать static... хотя не
+	// просто реализовать здесь на прямую
 	Point center() const { return middle(vertices[0], vertices[2]); }
 	std::pair<Line, Line> diagonals() const { return std::make_pair(Line(vertices[0], vertices[2]), Line(vertices[1], vertices[3])); }
 	virtual ~Rectangle() {}
