@@ -100,6 +100,7 @@ public:
 		}
 		header = layer[0];
 	}
+	
 
 	void change_element(long long number) {
 		node_wrapper* cur_el = header;
