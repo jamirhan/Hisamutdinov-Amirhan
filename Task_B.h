@@ -13,7 +13,6 @@ int int_log(int val) {
 	return std::ceil(std::log2(val));
 }
 
-
 struct node_wrapper {
 	node_wrapper* left_subtree = nullptr;
 	node_wrapper* right_subtree = nullptr;
@@ -21,6 +20,7 @@ struct node_wrapper {
 	size_t left_b = 0;
 	size_t right_b = 0;
 	int sign_changer = 0;
+	
 	node_wrapper(node_wrapper* left_subtree, node_wrapper* right_subtree, int sum, size_t left_b, size_t right_b):
 		left_subtree(left_subtree), right_subtree(right_subtree), sign_changer(sum), left_b(left_b), right_b(right_b) { }
 	node_wrapper() = default;
@@ -54,9 +54,12 @@ class section_tree {
 	std::pair<int, int> gather(size_t left, size_t right, node_wrapper* head) {
 		size_t cont_l = head->left_b;
 		size_t cont_r = head->right_b;
+		
 		if (!head) return std::make_pair(0, 0);
+		
 		std::pair<int, int> ans_1 = std::make_pair(0, 0);
 		std::pair<int, int> ans_2 = std::make_pair(0, 0);
+		
 		if (left <= cont_l && right >= cont_r) return std::make_pair(head->sign_changer, (head->right_b - head->left_b + 1) % 2);
 		size_t middle = head->left_subtree->right_b;
 		if (left <= middle) ans_1 = gather(left, right, head->left_subtree);
