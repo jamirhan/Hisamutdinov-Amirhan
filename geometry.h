@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <iostream>
 #include <math.h>
+#include <random>
 
 double  PI = 3.14159265;
 
@@ -27,9 +28,6 @@ double to_radians(const double angle) {
 double distance(Point point, Line line);
 
 double dis(Point p1, Point p2); // i had to name the function like this because mecherin already had function named distance
-// Для этого нужно учиться пользоваться namespace, создая своё под свои нужды
-
-std::vector<Point> get_rect(Point p1, Point p2, double att);// Это разве не конструктор прямоугольника?
 
 Point middle(Point p1, Point p2);
 
@@ -425,14 +423,19 @@ public:
 		}
 		return false;
 	}
-	// Суммирование площадей треугольников может плохо отработать на впуклом многоугольнике, так как там может подсчитываться площадь вне фигуры
-	bool containsPoint(Point point) const override {
-		double s = 0.0;
-		for (size_t i = 0; i < vertices.size(); ++i) {
-			s += Polygon{ point, vertices[i], vertices[(i + 1) % vertices.size()] }.area();
-		}
 
-		return abs(s - area()) < 1e-7;
+	bool containsPoint(Point point) const override {
+		bool contains = false;
+		size_t second = vertices_count - 1;
+		for (size_t i = 0; i < vertices_count; ++i) {
+			if (((vertices[i].y < point.y && vertices[second].y >= point.y) ||
+				 (vertices[second].y < point.y && vertices[i].y >= point.y)) &&
+				 (vertices[i].x + (point.y - vertices[i].y) /
+				 (vertices[second].y - vertices[i].y) * (vertices[second].x - vertices[i].x) < point.x))
+				contains = !contains;
+			second = i;
+		}
+		return contains;
 	}
 
 	void rotate(const Point center, const double angle) {
@@ -602,9 +605,34 @@ public:
 };
 
 class Rectangle : public Polygon {
+	std::vector<Point> get_rect(Point p1, Point p2, double att) {
+		double a, b; // b >= a // sides;
+		double h = dis(p1, p2);
+		double result = h / sqrt(pow(att, 2) + 1);
+		double result_2 = att * result;
+		a = std::min(result, result_2);
+		b = std::max(result, result_2);
+
+		double delta_y = p2.y - p1.y;
+		double delta_x = p2.x - p1.x;
+
+		double deg = atan(delta_y / delta_x);
+		double alpha = a / b;
+		double sq_deg = atan(alpha);
+		double val = PI / 2 - deg + sq_deg;
+		p2 = p1.rotate(p2, to_deg(val));
+
+		Point C(p2.x, p1.y);
+		Point D(p1.x, p2.y);
+		C = p1.rotate(C, -to_deg(val));
+		D = p1.rotate(D, -to_deg(val));
+		p2 = p1.rotate(p2, -to_deg(val));
+
+		return std::vector<Point>{ p1, C, p2, D };
+
+	}
 public:
-	Rectangle(Point p1, Point p2, double s) : Polygon(get_rect(p1, p2, s)) {}// Почему бы эту функцию не реализовать здесь, ну или хотя бы сделать static... хотя не
-	// просто реализовать здесь на прямую
+	Rectangle(Point p1, Point p2, double s) : Polygon(get_rect(p1, p2, s)) {}
 	Point center() const { return middle(vertices[0], vertices[2]); }
 	std::pair<Line, Line> diagonals() const { return std::make_pair(Line(vertices[0], vertices[2]), Line(vertices[1], vertices[3])); }
 	virtual ~Rectangle() {}
@@ -683,33 +711,6 @@ double dis(Point p1, Point p2) {
 	double d_y = p1.y - p2.y;
 	double dist = sqrt(pow(d_x, 2) + pow(d_y, 2));
 	return dist;
-}
-
-std::vector<Point> get_rect(Point p1, Point p2, double att) {
-	double a, b; // b >= a // sides;
-	double h = dis(p1, p2);
-	double result = h / sqrt(pow(att, 2) + 1);
-	double result_2 = att * result;
-	a = std::min(result, result_2);
-	b = std::max(result, result_2);
-
-	double delta_y = p2.y - p1.y;
-	double delta_x = p2.x - p1.x;
-
-	double deg = atan(delta_y / delta_x);
-	double alpha = a / b;
-	double sq_deg = atan(alpha);
-	double val = PI / 2 - deg + sq_deg;
-	p2 = p1.rotate(p2, to_deg(val));
-
-	Point C(p2.x, p1.y);
-	Point D(p1.x, p2.y);
-	C = p1.rotate(C, -to_deg(val));
-	D = p1.rotate(D, -to_deg(val));
-	p2 = p1.rotate(p2, -to_deg(val));
-
-	return std::vector<Point>{ p1, C, p2, D };
-
 }
 
 Point middle(const Point p1, const Point p2) {
