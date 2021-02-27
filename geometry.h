@@ -605,6 +605,7 @@ public:
 };
 
 class Rectangle : public Polygon {
+	// Так и не понял, зачем делать отдельную функцию, но ок
 	std::vector<Point> get_rect(Point p1, Point p2, double att) {
 		double a, b; // b >= a // sides;
 		double h = dis(p1, p2);
