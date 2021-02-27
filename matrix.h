@@ -892,6 +892,8 @@ Rational operator/(const Rational& first_val, const Rational& second_val) {
 	return copy;
 }
 
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+
 template <int N>
 class Finite { // change finite class 
 protected:
@@ -953,6 +955,7 @@ public:
 		return *this;
 	}
 
+	// А где проверка, что N простое? Хотя бы static assert добавь
 	Finite<N>& operator/=(const Finite<N>& num) {
 		long long oppos = opp(num.number);
 		*this *= Finite<N>(oppos);
@@ -1048,6 +1051,7 @@ class Matrix {
 
 public:
 	Matrix() { // only for squares
+	// Стоило бы это проверить, потому что пользователь не знает о таких правилах
 		for (size_t i = 0; i < M; ++i) {
 			matrix[i][i] = 1;
 		}
