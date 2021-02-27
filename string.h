@@ -56,7 +56,6 @@ class String
 	}
 	
 public:
-
 	size_t get_cap() { return capacity; }
 
 	String() //default constructor //checked
