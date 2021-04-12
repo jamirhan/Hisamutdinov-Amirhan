@@ -106,7 +106,7 @@ public:
 };
 
 
-void solution() {
+void solution() { // почему код в header файле?
 	std::string command;
 	std::string arg_1;
 	std::string arg_2;
