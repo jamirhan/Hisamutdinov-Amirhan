@@ -2,7 +2,7 @@
 #include <vector>
 
 
-int main() {
+int main() { // вся функциональность в main
     int n, m;
     std::cin >> n;
     int infty = INT32_MAX;
