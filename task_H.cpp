@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-int main() {
+int main() { // вся функциональность в main
     int n, m;
     std::cin >> n >> m;
     std::vector<int> a(n);
@@ -12,7 +12,7 @@ int main() {
         std::cin >> b[i];
 
     std::vector<std::vector<int>> dp(n, std::vector<int>(m)); // len of the biggest subseq
-    int num1, num2, num3;
+    int num1, num2, num3; // лучше объявлять в месте использования
 
     for (int i = 0; i < m; ++i)
         dp[0][i] = (a[0] == b[i]);
