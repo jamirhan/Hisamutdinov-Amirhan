@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-int main() {
+int main() { // вся функциональность в main
 
     int s, n;
     int infty = INT32_MAX;
