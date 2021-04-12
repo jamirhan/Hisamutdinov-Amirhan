@@ -81,7 +81,7 @@ public:
 
 };
 
-void solution() {
+void solution() { // А почему реализация функций в header файле?
 	int n;
 	std::cin >> n;
 	int a, b;
