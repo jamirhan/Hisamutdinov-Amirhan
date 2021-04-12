@@ -81,7 +81,7 @@ public:
 
 };
 
-void solution() { // А почему реализация функций в header файле?
+void solution() { // А почему реализация функций в header файле? Обычно в .h объявляют, а реализуют в .cpp
 	int n;
 	std::cin >> n;
 	int a, b;
