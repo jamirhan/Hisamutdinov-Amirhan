@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-int main() { // вся функциональность в main
+void solution() {
 
     int s, n;
     int infty = INT32_MAX;
@@ -41,4 +41,8 @@ int main() { // вся функциональность в main
 
     std::cout << maximal;
 
+}
+
+int main() { 
+    solution();
 }
