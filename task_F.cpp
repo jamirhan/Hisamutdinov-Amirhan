@@ -1,9 +1,8 @@
 #include <iostream>
 #include <vector>
 
-
-int main() { // вся функциональность в main
-    int n, m;
+void solution() {
+int n, m;
     std::cin >> n;
     int infty = INT32_MAX;
     std::vector<int> a(n);
@@ -38,5 +37,10 @@ int main() { // вся функциональность в main
     }
 
     std::cout << dp[n - 1][m - 1];
+}
+
+
+int main() { 
+    solution();
 
 }
