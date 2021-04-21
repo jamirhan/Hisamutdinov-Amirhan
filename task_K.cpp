@@ -6,7 +6,7 @@ bool has_bit(long long mask, long long bit) {
     return (mask >>= bit) & 1;
 }
 
-int main() { // вся функциональность в main
+void solution() {
     long long n, m;
     std::cin >> n >> m;
     if (n > m) { // n must be <= m 
@@ -52,4 +52,8 @@ int main() { // вся функциональность в main
 
     std::cout << ans;
 
+}
+
+int main() { // вся функциональность в main
+    solution();
 }
