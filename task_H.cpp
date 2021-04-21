@@ -1,8 +1,9 @@
 #include <iostream>
 #include <vector>
 
-int main() { // вся функциональность в main
-    int n, m;
+
+void solution() {
+int n, m;
     std::cin >> n >> m;
     std::vector<int> a(n);
     std::vector<int> b(m);
@@ -12,11 +13,12 @@ int main() { // вся функциональность в main
         std::cin >> b[i];
 
     std::vector<std::vector<int>> dp(n, std::vector<int>(m)); // len of the biggest subseq
-    int num1, num2, num3; // лучше объявлять в месте использования
 
     for (int i = 0; i < m; ++i)
         dp[0][i] = (a[0] == b[i]);
 
+
+    int num1, num2, num3; 
     int best_res;
     for (int i = 1; i < n; ++i) {
         best_res = 0;
@@ -49,5 +51,9 @@ int main() { // вся функциональность в main
     }
 
     std::cout << ans;
+}
 
+
+int main() { 
+    solution();
 }
