@@ -35,9 +35,8 @@ int dfs(int v) {
     return -1;
 }
 
-
-int main() { // assuming graph consists of only one component
-    int n, m;
+void solution() {
+        int n, m;
     std::cin >> n >> m;
     colors.resize(n);
     lst.resize(n);
@@ -63,4 +62,9 @@ int main() { // assuming graph consists of only one component
             std::cout << *it  + 1 << " ";
         }
     }
+}
+
+
+int main() { // assuming graph consists of only one component
+    solution();
 }
