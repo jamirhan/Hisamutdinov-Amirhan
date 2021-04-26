@@ -20,9 +20,8 @@ void dfs(int v) {
     tout[v] = cnt++;
 }
 
-
-int main() {
-    std::cin >> n;
+void solution() {
+        std::cin >> n;
     visited.resize(n);
     tin.resize(n);
     tout.resize(n);
@@ -44,4 +43,7 @@ int main() {
         std::cin >> u >> v;
         std::cout << int(tin[u - 1] < tin[v - 1] && tout[u - 1] > tout[v - 1]) << '\n';
     }
+}
+int main() {
+    solution();
 }
