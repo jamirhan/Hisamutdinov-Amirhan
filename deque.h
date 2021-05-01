@@ -7,7 +7,8 @@ namespace deque_tools {
         return std::ceil(double(a) / double(b));
     }
 
-    template<bool B, typename T, typename F>
+    template<bool B, typename T, typename F>// А зачем ещё раз реализовывать std::conditional? Если ради краткого написания, то
+    // Как то не видно выйгрыша.
     struct cond_t {
         typedef F type;
     };
@@ -175,7 +176,7 @@ class Deque {
 
         start = std::make_pair(start.x + start_index, start.y);
         cur_end = std::make_pair(cur_end.x + start_index, cur_end.y);
-        ar = new_ar;
+        ar = new_ar;// А старый массив удалить? -5% за утечку
         bucket_num = new_bucket_num;
 
     }
@@ -233,7 +234,8 @@ public:
         cur_end = std::make_pair(out_size - 1, (bucket_size + (size % bucket_size) - 1) % bucket_size);
         ++cur_end;
 
-        for (Point el = start; el != cur_end; ++el) {
+        for (Point el = start; el != cur_end; ++el) {// Это место так же следует экранировать от исключений 
+        // И отматывать конструкт случае проблем. -10%
             new(ar[el.x] + el.y) T(def_el);
         }
 
@@ -299,14 +301,15 @@ public:
     }
 
     T& at(int index) {
-        Point ind = start + index;
+        Point ind = start + index;// 4 копипасты, хоть и маленькие, всё равно плохо, так как в случае чего придётся менять код сразу
+        // в 4 местах. Лучше сделать один оператор [] (константный), а потом от него вызывать все остальные.
+        // (В не константном случае вызывать const_cast к не константе)
         if (ind >= cur_end || index < 0)
             throw std::out_of_range("index is unreachable");
         return ar[ind.x][ind.y];
     }
 
     void push_back(const T& obj) {
-
         if (cur_end.x >= bucket_num) {
             resize(bucket_num * resize_const);
         }
@@ -315,16 +318,16 @@ public:
     }
 
     void pop_back() {
-
-        --cur_end;
         (ar[cur_end.x] + cur_end.y)->~T();
+        --cur_end;
     }
 
     void push_front(const T& obj) {
         if (start.x == 0 && start.y == 0) {
             resize(bucket_num * resize_const);
         }
-        --start;
+        --start;// Лучше делать это после new, так как у тебя при сключении измениться внутренний параметр,
+        //А сам контейнер не поменяется, и деструктор может не правильно отработать, если в нём будет учитываться start. -5%
         new(ar[start.x] + start.y) T(obj);
     }
 
@@ -336,10 +339,11 @@ public:
 
     template <bool IsConst>
     class common_iterator {
+    
     public:
-
         using difference_type = int;
-        using value_type = T;
+        using value_type = T;// Тип у тебя так же меняется в зависимости от константности или не константности
+        // (хотя ни где и не используется)
         using pointer = typename deque_tools::cond_t<IsConst, const T*, T*>::type;
         using reference = typename deque_tools::cond_t<IsConst, const T&, T&>::type;
         using iterator_category = std::random_access_iterator_tag;
