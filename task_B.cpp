@@ -4,7 +4,7 @@
 
 int cnt = 0;
 int n;
-std::vector<int> tin;
+std::vector<int> tin; // по https://docs.google.com/document/d/1HKMXv0aCZCi98HeRaDyNNcXxxaugUghbbr06ouqu48Y/edit#heading=h.d6fr62ncv5d1 глобальными можно делать только константы
 std::vector<int> tout;
 std::vector<bool> visited;
 std::vector<std::vector<int>> lst;
@@ -27,7 +27,7 @@ void solution() {
     tout.resize(n);
     lst.resize(n);
     int a;
-    int root;
+    int root; // нужно инициализировать начальным значением
     for (int i = 0; i < n; ++i) {
         std::cin >> a;
         if (a != 0)
