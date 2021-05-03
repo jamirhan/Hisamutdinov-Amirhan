@@ -2,6 +2,7 @@
 #include <vector> 
 #include <string>
 #include <algorithm>
+#include <exception>
 
 int pow(const int a) {
 	int ans = 1;
@@ -954,9 +955,24 @@ public:
 		number %= N;
 		return *this;
 	}
+	
+	bool is_prime(size_t n) { // exponential
+		bool result = true;
+		for (int i = 2; i < n; ++i) {
+			if (n % i == 0) {
+				result = false;
+				break;
+			}
+		}
+		return result;
+	}
 
 	// А где проверка, что N простое? Хотя бы static assert добавь
+	// прошу прощения, но я сомневаюсь, что проверка на простоту делается в компайл-тайме
 	Finite<N>& operator/=(const Finite<N>& num) {
+		if (!is_prime(N)) {
+			throw std::invalid_argument("Facepalm");
+		}
 		long long oppos = opp(num.number);
 		*this *= Finite<N>(oppos);
 		return *this;
@@ -1052,6 +1068,9 @@ class Matrix {
 public:
 	Matrix() { // only for squares
 	// Стоило бы это проверить, потому что пользователь не знает о таких правилах
+		if (M != N) {
+			throw std::invalid_argument("Good luck with creating non-square identity matrix");
+		}
 		for (size_t i = 0; i < M; ++i) {
 			matrix[i][i] = 1;
 		}
