@@ -176,7 +176,9 @@ class Deque {
 
         start = std::make_pair(start.x + start_index, start.y);
         cur_end = std::make_pair(cur_end.x + start_index, cur_end.y);
-        ar = new_ar;// А старый массив удалить? -5% за утечку
+        destroy();
+        ar = new_ar;// А старый массив удалить? -5% за утечку // fixed
+        
         bucket_num = new_bucket_num;
 
     }
@@ -235,8 +237,22 @@ public:
         ++cur_end;
 
         for (Point el = start; el != cur_end; ++el) {// Это место так же следует экранировать от исключений 
-        // И отматывать конструкт случае проблем. -10%
-            new(ar[el.x] + el.y) T(def_el);
+        // И отматывать конструкт случае проблем. -10% // fixed
+            try {
+                new(ar[el.x] + el.y) T(def_el);
+            } except(...) {
+                for (Point del = start; del != el; ++del) {
+                    (ar[del.x] + del.y)->~T();
+                }
+                for (int i = 0; i < bucket_num; ++i) {
+                    delete[] reinterpret_cast<uint8_t*>(ar[i]);
+                }
+                bucket_num = 0;
+                start = std::make_pair(0, 0);
+                cur_end = std::make_pair(0, 0);
+                bucket_num = 0;
+                throw;
+            }
         }
 
     }
@@ -325,10 +341,10 @@ public:
     void push_front(const T& obj) {
         if (start.x == 0 && start.y == 0) {
             resize(bucket_num * resize_const);
-        }
-        --start;// Лучше делать это после new, так как у тебя при сключении измениться внутренний параметр,
-        //А сам контейнер не поменяется, и деструктор может не правильно отработать, если в нём будет учитываться start. -5%
+        }// Лучше делать это после new, так как у тебя при сключении измениться внутренний параметр,
+        //А сам контейнер не поменяется, и деструктор может не правильно отработать, если в нём будет учитываться start. -5% //fixed
         new(ar[start.x] + start.y) T(obj);
+        --start;
     }
 
     void pop_front() {
