@@ -3,12 +3,12 @@
 
 
 std::vector<int> colors; // 0 - white, 1 - gray, 2 - black
-std::vector<std::vector<int>> lst;
+std::vector<std::vector<int>> lst; // глобально можно объявлять только константы
 std::vector<int> cycle;
 
-int dfs(int v) {
+int dfs(int v) { // v - однобуквенное имя переменной, лучше не использовать
     colors[v] = 1;
-    int val;
+    int val; // нужно инициализировать
     for (auto u: lst[v]) {
         if (colors[u] == 1) {
             cycle.push_back(v);
@@ -19,7 +19,7 @@ int dfs(int v) {
             if (val != -1) {
                 if (val == v) {
                     cycle.push_back(v);
-                    return -2;
+                    return -2; // можно как-то определить -1 и -2 в define, чтобы было понятно, что значат эти возвращаемые значения
                 }
                 else if (val != -2) {
                     cycle.push_back(v);
