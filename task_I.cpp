@@ -4,7 +4,7 @@
 
 
 std::vector<std::vector<int>> lst;
-std::vector<bool> visited;
+std::vector<bool> visited; // глобально лучше объявлять только константы
 std::vector<int> junctions;
 std::vector<int> tin;
 std::vector<int> ret;
