@@ -1,38 +1,43 @@
 #include <iostream>
 #include <vector>
 
+namespace constants {
+  std::vector<int> colors; // 0 - white, 1 - gray, 2 - black
+  std::vector<std::vector<int>> lst; 
+  std::vector<int> cycle;
+  const int possible = -2;
+  const int impossible = -1;
+}
 
-std::vector<int> colors; // 0 - white, 1 - gray, 2 - black
-std::vector<std::vector<int>> lst; // глобально можно объявлять только константы
-std::vector<int> cycle;
 
-int dfs(int v) { // v - однобуквенное имя переменной, лучше не использовать
-    colors[v] = 1;
-    int val; // нужно инициализировать
-    for (auto u: lst[v]) {
+using namespace constants;
+
+int dfs(int vert) { 
+    colors[vert] = 1;
+    for (auto u: lst[vert]) {
         if (colors[u] == 1) {
-            cycle.push_back(v);
+            cycle.push_back(vert);
             return u;
         }
         if (colors[u] == 0) {
-            val = dfs(u);
-            if (val != -1) {
-                if (val == v) {
-                    cycle.push_back(v);
-                    return -2; // можно как-то определить -1 и -2 в define, чтобы было понятно, что значат эти возвращаемые значения
+            int val = dfs(u);
+            if (val != impossible) {
+                if (val == vert) {
+                    cycle.push_back(vert);
+                    return possible; 
                 }
-                else if (val != -2) {
-                    cycle.push_back(v);
+                else if (val != possible) {
+                    cycle.push_back(vert);
                     return val;
                 }
                 else {
-                    return -2;
+                    return possible;
                 }
             }
         }
     }
-    colors[v] = 2;
-    return -1;
+    colors[vert] = 2;
+    return possible;
 }
 
 void solution() {
@@ -50,10 +55,10 @@ void solution() {
         if (colors[i] == 0) {
             val = dfs(i);
         }
-        if (val != -1)
+        if (val != impossible)
             break;
     }
-    if (val == -1) {
+    if (val == impossible) {
         std::cout << "NO";
     }
     else {
