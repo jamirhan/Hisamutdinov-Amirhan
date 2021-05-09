@@ -4,9 +4,6 @@
 #include <limits>
 #include <list>
 
-// TODO:
-// 1) change allocator when copying
-//
 
 namespace tools {
     template<bool B, typename T, typename F>
