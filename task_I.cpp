@@ -2,13 +2,16 @@
 #include <vector>
 #include <algorithm>
 
+namespace constants {
+	static std::vector<std::vector<int>> lst;
+	static std::vector<bool> visited; 
+	static std::vector<int> junctions;
+	static std::vector<int> tin;
+	static std::vector<int> ret;
+	static int cnt = 0;
+};
 
-std::vector<std::vector<int>> lst;
-std::vector<bool> visited; // глобально лучше объявлять только константы
-std::vector<int> junctions;
-std::vector<int> tin;
-std::vector<int> ret;
-int cnt = 0;
+using namespace constants;
 
 void dfs(int v, int p = -1) {
     visited[v] = true;
