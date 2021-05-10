@@ -36,6 +36,8 @@ class FixedAllocator {
         blocks.push_back(new_block);
         Chunk* chunk_iter = new_block;
         for (size_t i = 0; i < chunks_per_block - 1; ++i) {
+            // Колдовство... хотя можно было просто в структуру чанков добавить массив чаров chunk_size-8 размера
+            // И выделять per_block чанков обычным new
             new(chunk_iter) Chunk(reinterpret_cast<Chunk*>(reinterpret_cast<uint8_t*>(chunk_iter) + chunk_size));
             chunk_iter = chunk_iter->next;
         }
@@ -112,7 +114,8 @@ public:
         else
             alloc->deallocate(ptr);
     }
-    int help() const{
+    
+    int help() const{// ???
         return 2;
     }
     bool operator==(const FastAllocator<T>& another) const {
