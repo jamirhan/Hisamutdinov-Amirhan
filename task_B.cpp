@@ -2,7 +2,7 @@
 #include <vector>
 #include <algorithm>
 
-namespace constants {
+namespace constants { // почему оно называется constants, это же не константы?)
   int cnt = 0;
   int n;
   std::vector<int> tin; 
