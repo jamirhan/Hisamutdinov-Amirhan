@@ -1,12 +1,17 @@
 #include <vector>
 #include <iostream>
 #define IOS std::ios_base::sync_with_stdio(false), std::cin.tie(0), std::cout.tie(0);
-std::vector<int> vs;
-std::vector<std::vector<bool>> g; // глобальные переменные, не константы
-std::vector<std::vector<bool>> r;
-int n;
+
+namespace graph_details {
+	std::vector<int> vs;
+	std::vector<std::vector<bool>> g;
+	std::vector<std::vector<bool>> r;
+	int n;
+}
 
 void euler(int v) {
+	
+    using namespace graph_details;
     for (int i = 0; i < n; ++i) {
         if (!g[v][i] || r[v][i])
             continue;
@@ -18,6 +23,7 @@ void euler(int v) {
 
 void solution() {
     IOS;
+    using namespace graph_details;
     int a;
     std::cin >> n >> a;
     g = std::vector<std::vector<bool>>(n, std::vector<bool>(n));
