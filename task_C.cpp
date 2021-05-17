@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-namespace constants {
+namespace graph_details {
   std::vector<int> colors; // 0 - white, 1 - gray, 2 - black
   std::vector<std::vector<int>> lst; 
   std::vector<int> cycle;
@@ -10,9 +10,8 @@ namespace constants {
 }
 
 
-using namespace constants;
-
 int dfs(int vert) { 
+  using namespace graph_details;
     colors[vert] = 1;
     for (auto u: lst[vert]) {
         if (colors[u] == 1) {
@@ -41,6 +40,7 @@ int dfs(int vert) {
 }
 
 void solution() {
+  using namespace graph_details;
         int n, m;
     std::cin >> n >> m;
     colors.resize(n);
