@@ -2,7 +2,7 @@
 #include <vector>
 #include <algorithm>
 
-namespace constants {
+namespace graph_details {
 	static std::vector<std::vector<int>> lst;
 	static std::vector<bool> visited; 
 	static std::vector<int> junctions;
@@ -11,9 +11,8 @@ namespace constants {
 	static int cnt = 0;
 };
 
-using namespace constants;
-
 void dfs(int v, int p = -1) {
+    using namespace graph_details;
     visited[v] = true;
     tin[v] = ret[v] = cnt++;
     int c = 0;
@@ -36,6 +35,7 @@ void dfs(int v, int p = -1) {
 
 
 void solution() {
+    using namespace graph_details;
     int n, m;
     std::cin >> n >> m;
     lst.resize(n);
