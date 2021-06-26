@@ -8,7 +8,7 @@ namespace deque_tools {
     }
 
     template<bool B, typename T, typename F>// А зачем ещё раз реализовывать std::conditional? Если ради краткого написания, то
-    // Как то не видно выйгрыша.
+    // Как то не видно выйгрыша
     struct cond_t {
         typedef F type;
     };
