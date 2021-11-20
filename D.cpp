@@ -12,7 +12,7 @@ struct Node {
     Node(bool t): term(t), count(t) {};
 };
 
-std::string s;
+std::string s;// глобальными лучше делать только константы
 std::vector<Node> els;
 std::vector<std::string> words;
 int ind = 0;
