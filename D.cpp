@@ -12,12 +12,15 @@ struct Node {
     Node(bool t): term(t), count(t) {};
 };
 
-std::string s;// глобальными лучше делать только константы
-std::vector<Node> els;
-std::vector<std::string> words;
-int ind = 0;
+namespace algo_detail {
+    std::string s;
+    std::vector<Node> els;
+    std::vector<std::string> words;
+    int ind = 0;
+}
 
 void out_word(int word_ind) {
+    using namespace algo_detail;
     std::cout << words[word_ind];
     bool dot_found = false;
     for (; ind < s.length(); ++ind) {
@@ -30,8 +33,9 @@ void out_word(int word_ind) {
 
 
 
-int add_char(int nd, char c,bool term, int word_ind = -1) { 
-auto it = els[nd].children.find(c);
+int add_char(int nd, char c,bool term, int word_ind = -1) {
+    using namespace algo_detail;
+    auto it = els[nd].children.find(c);
     if (it != els[nd].children.end()) {
         if (term) els[it->second].term = true, ++els[it->second].count, els[it->second].word=word_ind;
         return it->second;
@@ -44,6 +48,7 @@ auto it = els[nd].children.find(c);
 }
 
 void add_string(const std::string& s) {
+    using namespace algo_detail;
     int cur = 0;
     words.push_back(s);
     for (int i = 0; i < s.length(); ++i) {
@@ -53,6 +58,7 @@ void add_string(const std::string& s) {
 
 
 void add_to_dic(int nd) {
+    using namespace algo_detail;
     for (auto& it: els[nd].children) {
         if (els[it.second].term) {
             for (int i = 0; i < els[it.second].count; ++i)
@@ -64,7 +70,7 @@ void add_to_dic(int nd) {
 
 
 int main() {
-    
+    using namespace algo_detail;
     std::cin >> s;
 
     std::string cur;
