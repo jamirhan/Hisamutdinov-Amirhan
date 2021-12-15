@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-
+// для полного балла нужно было сделать расширенный алгоритм (за линейное время)
 int main() {
     int n;
     std::cin >> n;
