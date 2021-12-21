@@ -1,15 +1,19 @@
 #include <iostream>
 #include <vector>
 
-// для полного балла нужно было сделать расширенный алгоритм (за линейное время)
+
 int main() {
     int n;
     std::cin >> n;
     std::vector<int> v(n + 1);
+    std::vector<int> cur_primes;
+
+    for (int i = 2; i <= n; ++i) v[i] = i;
+
     for (int i = 2; i <= n; ++i) {
-        if (v[i]) continue;
-        for (int j = i; j <= n; j += i) {
-            if (!v[j]) v[j] = i;
+        if (v[i] == i) cur_primes.push_back(i);
+        for (int j = 0; j < cur_primes.size() && cur_primes[j] * i <= n && cur_primes[j] <= v[i]; ++j) {
+            v[cur_primes[j] * i] = cur_primes[j];
         }
     }
 
@@ -21,3 +25,4 @@ int main() {
 
     std::cout << ans << '\n';
 }
+
